@@ -36,10 +36,11 @@ db=sqlite3.connect(dbf)
 db.row_factory=sqlite3.Row
 db.text_factory=lambda b:b.decode(errors="ignore")
 db.isolation_level=None
+#Set to shared mode to avoid conflict
 db.execute("PRAGMA journal_mode=WAL")
 
-with tempfile.NamedTemporaryFile(delete_on_close=False) as tmp:
-	tmp.write(b"PRAGMA journal_mode=WAL;\n")
+with tempfile.NamedTemporaryFile(mode="w+",delete_on_close=False) as tmp:
+	tmp.write("PRAGMA journal_mode=WAL;\n")
 	for f in db.execute("""
 				SELECT mp.file,md.id mdid, md.added_at,md.created_at md_created_at, mp.created_at mp_created_at,mi.created_at mi_created_at
 				FROM metadata_items md
@@ -52,20 +53,26 @@ with tempfile.NamedTemporaryFile(delete_on_close=False) as tmp:
 		except Exception as e:
 			eprint(e)
 			continue
-		fd=int(min(fd,f["added_at"] or fd,f["md_created_at"] or fd,f["mp_created_at"] or fd,f["mi_created_at"] or fd))
+		fd=int(min(	#Find the smallest timestamp
+				fd,
+				f["added_at"] or fd,
+				f["md_created_at"] or fd,
+				f["mp_created_at"] or fd,
+				f["mi_created_at"] or fd,
+			))
 		if fd<(f["added_at"] or fd+1):
-			#print(f"{f['file']} {fd}<{f['added_at']}")
+			#eprint(f"{f['file']} {fd}<{f['added_at']}")
 			sql=f"UPDATE metadata_items SET added_at={fd} WHERE id={f['mdid']};\n"
 			#print(sql)
 			eprint("\b+",end="",flush=True)
-			tmp.write(sql.encode())
-		#	db.execute(f"UPDATE metadata_items SET added_at={fd} WHERE id={f['mdid']};")
+			tmp.write(sql)
+			#db.execute(sql)	#Can't execute directly due to PleX customizations
 	db.close()
-	if len(sys.argv)>1 and sys.argv[1]=="--direct":
+	if len(sys.argv)>1 and sys.argv[1]=="--direct":	#As a hack we saved everything to a tempfile and tell PleX to read that
 		tmp.close()
 		eprint("\nUpdating DB")
-		os.system(f""" "{SQLite}" "{dbf}" < "{tmp.name}" """)
+		os.system(f'{SQLite} "{dbf}" < "{tmp.name}"')
 	else:
 		tmp.seek(0)
-		print(tmp.read().decode())
+		print(tmp.read())
 eprint("Done.")
