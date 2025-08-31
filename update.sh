@@ -10,4 +10,4 @@ fi
 dpkg -i "$deb"
 
 #Coment out below if you wish to retain prior packages.  Otherwise only the most recently installed version is kept.
-find . -maxdepth 1 -name "plex*.deb" ! -name "$deb" -type f -exec echo {} \;
+find . -maxdepth 1 -name "plex*.deb" ! -name "$deb" -type f -delete
