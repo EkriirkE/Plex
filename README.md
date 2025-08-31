@@ -5,6 +5,10 @@ Stop the plexmediaserver service and back up the database files before making mo
 
 While in the plexmediaserver folder, where the program `Plex SQLite` lives....
 
+### update.sh
+Check for, and download, the most recent version of aacrch64 plexmediaserver.  
+Automatically installs if a new version is downloaded, and cleans up prior downloads.  If you remove the most recent .deb the script will always dowload and install regrless of version.
+
 ### datemedia.py
 Update the "Date Added" in Plex to match the modification date of the source media - only if it is older.  
 Sometimes reorganizing your media folders causes Plex to detect (old) media as a new addition and sort it accordingly.  I don't like old media showing up in recommended as "new".  
