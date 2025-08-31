@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #--------========########========--------
-#	PleX Media Server "Added Date" true-up
+#	Plex Media Server "Added Date" true-up
 #	2025-08-31	Erik Johnson - EkriirkE
 #
 #	Place in the root of the plexmediaserver, where "Plex SQLite" (optionally) and "Library" exists.
@@ -26,15 +26,15 @@ dbf="Library/Application Support/Plex Media Server/Plug-in Support/Databases/com
 #Plex SQLite executable, if --direct is passed
 SQLite='./"Plex SQLite"'
 
-def eprint(*args, **kwargs):
-	print(*args, **kwargs, file=sys.stderr)
+def eprint(*args,**kwargs):
+	print(*args,**kwargs,file=sys.stderr)
 
 if not os.path.exists(dbf):
 	eprint("Database not found!")
 	exit(1)
 db=sqlite3.connect(dbf)
 db.row_factory=sqlite3.Row
-db.text_factory=lambda b:b.decode(errors="ignore")
+db.text_factory=lambda x:x.decode(errors="ignore")
 db.isolation_level=None
 #Set to shared mode to avoid conflict
 db.execute("PRAGMA journal_mode=WAL")
@@ -66,13 +66,14 @@ with tempfile.NamedTemporaryFile(mode="w+",delete_on_close=False) as tmp:
 			#print(sql)
 			eprint("\b+",end="",flush=True)
 			tmp.write(sql)
-			#db.execute(sql)	#Can't execute directly due to PleX customizations
+			#db.execute(sql)	#Can't execute directly due to Plex customizations
 	db.close()
-	if len(sys.argv)>1 and sys.argv[1]=="--direct":	#As a hack we saved everything to a tempfile and tell PleX to read that
+	if any(x for x in sys.argv if x=="--direct"):	#As a hack we saved everything to a tempfile and tell Plex to read that
 		tmp.close()
 		eprint("\nUpdating DB")
 		os.system(f'{SQLite} "{dbf}" < "{tmp.name}"')
+		eprint("Done.")
 	else:
+		eprint()
 		tmp.seek(0)
 		print(tmp.read())
-eprint("Done.")
