@@ -16,7 +16,7 @@ import os, sys
 import sqlite3
 import tempfile
 
-#Optionally use another library location as a timestamp source
+#Optionally use another library location as a timestamp source.  Folder structures must match beyond the root
 #	curroot= current lirary root eg "/media/"
 #	otherroot= reference library files eg "/mnt/oldplex/" 
 curroot=""
