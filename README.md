@@ -12,7 +12,7 @@ If the file is newer that the original added date and it get updated, the best y
 Protip:  An in-place file replacement is usually ignored by Plex, so avoid moving or renaming old media if replacing it with a better copy (of the exact same name and extension).  
 
 ### Move library location, and its contents, from `/media/OldPath` to `/media/NewLocation`
-```sqlite
+```sql
 UPDATE section_locations SET root_path='/media/NewLocation' WHERE root_path='/media/OldPath';
 UPDATE media_parts SET file=REPLACE(file,'/media/OldPath/','/media/NewLocation/') WHERE file LIKE '/media/OldPath/%';
 ```
