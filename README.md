@@ -11,7 +11,16 @@ Sometimes reorganizing your media folders causes Plex to detect (old) media as a
 If the file is newer that the original added date and it get updated, the best you can with this script is to "touch" the media file(s) with the expected dates before running this script.  
 Protip:  An in-place file replacement is usually ignored by Plex, so avoid moving or renaming old media if replacing it with a better copy (of the exact same name and extension).  
 
-### Move library location, and its contents, from `/media/OldPath` to `/media/NewLocation`
+---
+
+### Manual SQL stuff
+
+Enter the Plex SQL Environment via
+```shell
+./Plex\ SQLite "Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db"
+```
+
+#### Move library location, and its contents, from `/media/OldPath` to `/media/NewLocation`
 ```sql
 UPDATE section_locations SET root_path='/media/NewLocation' WHERE root_path='/media/OldPath';
 UPDATE media_parts SET file=REPLACE(file,'/media/OldPath/','/media/NewLocation/') WHERE file LIKE '/media/OldPath/%';
