@@ -1,8 +1,20 @@
+#!/usr/bin/env python
+#--------========########========--------
+#	PleX Media Server "Added Date" true-up
+#	2025-08-31	Erik Johnson - EkriirkE
+#
+#	Place in the root of the plexmediaserver, where "Plex SQLite" (optionally) and "Library" exists.
+#	Run:
+#	python datemedia.py
+#		 --direct will execute against the DB directly
+#
+#	SQL output can be >redirected to a file without the status text.
+#
+#--------========########========--------
+
 import os, sys
 import sqlite3
 import tempfile
-
-#Output can be >redirected to a file without the status text.
 
 #Optionally use another library location as a timestamp source
 #	curroot= current lirary root eg "/media/"
