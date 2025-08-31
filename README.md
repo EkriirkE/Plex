@@ -22,6 +22,8 @@ Enter the Plex SQL Environment via
 
 #### Move library location, and its contents, from `/media/OldPath` to `/media/NewLocation`
 ```sql
+-- Library
 UPDATE section_locations SET root_path='/media/NewLocation' WHERE root_path='/media/OldPath';
+-- Library contents
 UPDATE media_parts SET file=REPLACE(file,'/media/OldPath/','/media/NewLocation/') WHERE file LIKE '/media/OldPath/%';
 ```
