@@ -7,7 +7,8 @@ While in the plexmediaserver folder, where the program `Plex SQLite` lives....
 
 ### update.sh
 Check for, and download, the most recent version of aacrch64 plexmediaserver.  
-Automatically installs if a new version is downloaded, and cleans up prior downloads.  If you remove the most recent .deb the script will always dowload and install regrless of version.
+Automatically installs if a new version is downloaded, and cleans up prior downloads.  If you remove the most recent .deb the script will always dowload and install regrless of version.  
+Note that I do not use Debian, but `dpkg` is available on ArchLinuxARM and PMS has always worked great on it.
 
 ### datemedia.py
 Update the "Date Added" in Plex to match the modification date of the source media - only if it is older.  
