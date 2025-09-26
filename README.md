@@ -16,6 +16,11 @@ Sometimes reorganizing your media folders causes Plex to detect (old) media as a
 If the file is newer that the original added date and it get updated, the best you can with this script is to "touch" the media file(s) with the expected dates before running this script.  
 Protip:  An in-place file replacement is usually ignored by Plex, so avoid moving or renaming old media if replacing it with a better copy (of the exact same name and extension).  
 
+### itunes2plex.py
+Extract song ratings, play counts, and last play date from iTunes Library.xml and insert/sync it with Plex.
+Either filter a PlexAcctName to apply the stats to a single profile, or blank for all profiles in your account.
+Outputs SQLite commands to STDOUT, redirect>to a file and import using Plex SQLite
+
 ---
 
 ### Manual SQL stuff
