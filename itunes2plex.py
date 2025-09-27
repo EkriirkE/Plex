@@ -39,7 +39,7 @@ SQLite='./"Plex SQLite"'
 def eprint(*args,**kwargs):
 	print(*args,**kwargs,file=sys.stderr)
 
-direct=any(x for x in sys.argv if x=="--direct")
+direct="--direct" in sys.argv
 if not os.path.exists(dbf): raise FileNotFoundError(dbf)
 db=sqlite3.connect(dbf)
 db.row_factory=sqlite3.Row
@@ -123,6 +123,7 @@ with tempfile.NamedTemporaryFile(mode="w+",delete_on_close=False) if direct else
 					q="UPDATE metadata_item_settings SET rating=?,last_viewed_at=?,view_count=?,created_at=?,updated_at=? WHERE account_id=? AND guid=?",(rt,pd,pc,da,dm,a["id"],guid)
 				else:
 					q="INSERT INTO metadata_item_settings (account_id,guid,rating,view_count,last_viewed_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?)",(a["id"],guid,rt,pc,pd,da,dm)
+					eprint("+",end="",flush=True)
 				#Can't execute directly due to Plex customizations
 				#db.execute(*q)
 				#Convert prepared statement to literal
