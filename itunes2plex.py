@@ -19,10 +19,9 @@ from urllib import parse
 import time
 import tempfile
 
-PlexProfileName="Erik"	#Plex account name to set metadata for, blank/unset for all accounts
+PlexProfileName="Erik"	#Plex profile name to set metadata for, blank/unset for all profiles
 #Location of Plex Library database
 dbf="Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db"
-dbf="/tmp/com.plexapp.plugins.library.db"
 #Location of iTunes Music Library XML file
 itx="../Music/iTunes Library.xml"
 #Match all possible library item matches, otherwise only first match is used
@@ -54,7 +53,7 @@ if PlexProfileName:
 	profiles=[next((x for x in profiles if x["name"]==PlexProfileName),dict(id=0))]
 	eprint(f"Using {profiles=}")
 
-eprint("Reading iTunes Library")
+eprint("Reading "+itx)
 xml = ET.parse(itx)
 for k in xml.find("dict").findall("key"):
 	if k.text != "Tracks": continue
